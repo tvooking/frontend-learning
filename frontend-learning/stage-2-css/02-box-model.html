@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>第2课：盒模型</title>
+  <style>
+    body {
+      font-family: "Microsoft YaHei", sans-serif;
+      background: #f0f2f5;
+      padding: 20px;
+    }
+
+    h1 { text-align: center; color: #2c3e50; }
+
+    /* 盒模型可视化 */
+    .box-demo {
+      width: 200px;           /* 内容宽度 */
+      height: 100px;          /* 内容高度 */
+      padding: 20px;          /* 内边距：内容与边框的距离 */
+      border: 5px solid #e74c3c;  /* 边框 */
+      margin: 30px auto;      /* 外边距：元素之间的距离，auto 水平居中 */
+      background: #ecf0f1;
+    }
+
+    /* 不同盒模型对比 */
+    .box {
+      width: 200px;
+      height: 80px;
+      padding: 20px;
+      border: 5px solid #3498db;
+      margin: 10px;
+      background: #d5f4e6;
+      display: inline-block;
+    }
+
+    /* box-sizing: border-box 包含 padding 和 border */
+    .box-border {
+      box-sizing: border-box;
+      border-color: #e67e22;
+      background: #fdebd0;
+    }
+
+    /* 解释图 */
+    .diagram {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .diagram pre {
+      background: #2c3e50;
+      color: #2ecc71;
+      padding: 15px;
+      border-radius: 5px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📦 盒模型（Box Model）</h1>
+
+  <div class="diagram">
+    <h2>盒模型结构</h2>
+    <pre>
+  ┌─────────────────────────────┐  ← margin (外边距)
+  │  ┌───────────────────────┐  │
+  │  │  border (边框)         │  │
+  │  │  ┌─────────────────┐  │  │
+  │  │  │  padding (内边距) │  │  │
+  │  │  │  ┌───────────┐  │  │  │
+  │  │  │  │ 内容区     │  │  │  │
+  │  │  │  │ (content)  │  │  │  │
+  │  │  │  └───────────┘  │  │  │
+  │  │  └─────────────────┘  │  │
+  │  └───────────────────────┘  │
+  └─────────────────────────────┘
+    </pre>
+  </div>
+
+  <div class="diagram">
+    <h2>实际演示</h2>
+    <div class="box-demo">
+      内容区 200×100<br>
+      padding: 20<br>
+      border: 5<br>
+      margin: 30
+    </div>
+    <p style="text-align:center; color:#666;">
+      实际占位 = 200 + 20×2 + 5×2 + 30×2 = 310px 宽
+    </p>
+  </div>
+
+  <div class="diagram">
+    <h2>content-box vs border-box</h2>
+    <div class="box">content-box（默认）<br>宽 = 200 + 40 + 10 = 250px</div>
+    <div class="box box-border">border-box<br>宽 = 200px（含 padding 和 border）</div>
+    <p><b>💡 推荐：</b>全局设置 <code>box-sizing: border-box</code>，布局更好控制。</p>
+  </div>
+
+  <div class="diagram">
+    <h2>display 属性</h2>
+    <ul>
+      <li><b>block</b> — 块级元素，独占一行（div, h1, p）</li>
+      <li><b>inline</b> — 行内元素，不换行（span, a, strong）</li>
+      <li><b>inline-block</b> — 行内块级（既有宽高又不换行）</li>
+      <li><b>none</b> — 隐藏元素</li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <h2>✏️ 动手试试</h2>
+  <p>1. 创建一个个人信息卡片，使用 margin、padding、border<br>
+     2. 尝试把 box 的 display 改成 block、inline、inline-block 看看区别<br>
+     3. 用 border-radius: 50% 做一个圆形头像</p>
+</body>
+</html>

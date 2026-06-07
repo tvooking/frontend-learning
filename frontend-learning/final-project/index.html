@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的个人主页</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- ====== 导航栏 ====== -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="#" class="logo">🚀 我的主页</a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#hero">首页</a></li>
+        <li><a href="#about">关于</a></li>
+        <li><a href="#skills">技能</a></li>
+        <li><a href="#projects">作品</a></li>
+        <li><a href="#contact">联系</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()">☰</button>
+    </div>
+  </nav>
+
+  <!-- ====== 首页 ====== -->
+  <section id="hero" class="hero">
+    <div class="container hero-content">
+      <div class="hero-text">
+        <h1>你好，我是 <span class="highlight">前端学习者</span> 👋</h1>
+        <p>一个热爱编程、正在学习前端开发的初学者。</p>
+        <p>这个网站就是我一步一步学出来的成果！</p>
+        <div class="hero-btns">
+          <a href="#projects" class="btn btn-primary">查看作品</a>
+          <a href="#contact" class="btn btn-outline">联系我</a>
+        </div>
+      </div>
+      <div class="hero-avatar">
+        <div class="avatar-circle">👨‍💻</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 关于 ====== -->
+  <section id="about" class="section">
+    <div class="container">
+      <h2 class="section-title">📖 关于我</h2>
+      <div class="about-content">
+        <div class="about-card">
+          <h3>🎯 学习经历</h3>
+          <p>2026年开始学习前端开发，从 HTML、CSS 到 JavaScript，一步步走到现在。</p>
+        </div>
+        <div class="about-card">
+          <h3>💡 学习目标</h3>
+          <p>掌握前端三大件，能够独立完成网页项目，未来进军全栈开发。</p>
+        </div>
+        <div class="about-card">
+          <h3>🎮 兴趣爱好</h3>
+          <p>除了编程，还喜欢游戏、音乐和摄影。相信技术和创意能改变世界。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 技能 ====== -->
+  <section id="skills" class="section section-dark">
+    <div class="container">
+      <h2 class="section-title">⚡ 技能</h2>
+      <div class="skills-grid">
+        <div class="skill-item">
+          <div class="skill-icon">🌐</div>
+          <h3>HTML</h3>
+          <div class="skill-bar">
+            <div class="skill-progress" style="width:85%" data-level="85%"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-icon">🎨</div>
+          <h3>CSS</h3>
+          <div class="skill-bar">
+            <div class="skill-progress" style="width:70%" data-level="70%"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-icon">⚡</div>
+          <h3>JavaScript</h3>
+          <div class="skill-bar">
+            <div class="skill-progress" style="width:60%" data-level="60%"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-icon">🔧</div>
+          <h3>Flexbox / Grid</h3>
+          <div class="skill-bar">
+            <div class="skill-progress" style="width:75%" data-level="75%"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-icon">📱</div>
+          <h3>响应式设计</h3>
+          <div class="skill-bar">
+            <div class="skill-progress" style="width:65%" data-level="65%"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-icon">🤝</div>
+          <h3>团队协作</h3>
+          <div class="skill-bar">
+            <div class="skill-progress" style="width:80%" data-level="80%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 作品 ====== -->
+  <section id="projects" class="section">
+    <div class="container">
+      <h2 class="section-title">💼 我的作品</h2>
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-img" style="background:#3498db;">📝</div>
+          <div class="project-info">
+            <h3>待办清单应用</h3>
+            <p>使用 JavaScript 打造的交互式任务管理工具，支持增删改查和筛选。</p>
+            <div class="project-tags">
+              <span>HTML</span><span>CSS</span><span>JavaScript</span>
+            </div>
+          </div>
+        </div>
+        <div class="project-card">
+          <div class="project-img" style="background:#e67e22;">🌐</div>
+          <div class="project-info">
+            <h3>响应式博客</h3>
+            <p>使用 Flexbox 和 Grid 构建的响应式博客页面，适配手机和平板。</p>
+            <div class="project-tags">
+              <span>HTML</span><span>CSS</span><span>响应式</span>
+            </div>
+          </div>
+        </div>
+        <div class="project-card">
+          <div class="project-img" style="background:#2ecc71;">🎮</div>
+          <div class="project-info">
+            <h3>猜数字游戏</h3>
+            <p>一个用 JavaScript 写的小游戏，电脑随机生成数字，你来猜。</p>
+            <div class="project-tags">
+              <span>JavaScript</span><span>DOM</span><span>交互</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 联系 ====== -->
+  <section id="contact" class="section section-dark">
+    <div class="container">
+      <h2 class="section-title">📬 联系我</h2>
+      <div class="contact-content">
+        <div class="contact-info">
+          <p>📧 xiaoming@example.com</p>
+          <p>📍 中国 · 北京</p>
+          <p>🐱 <a href="#">GitHub</a></p>
+        </div>
+        <form class="contact-form" id="contact-form" onsubmit="handleSubmit(event)">
+          <input type="text" placeholder="你的名字" required>
+          <input type="email" placeholder="你的邮箱" required>
+          <textarea rows="4" placeholder="想说的话..." required></textarea>
+          <button type="submit" class="btn btn-primary">发送 💌</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 回到顶部 ====== -->
+  <button id="back-to-top" onclick="scrollToTop()" title="回到顶部">⬆</button>
+
+  <!-- ====== 页脚 ====== -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 我的个人主页 · 用 ❤️ 和代码打造</p>
+      <p class="footer-tip">💡 提示：这个网站全部是用你学到的知识制作的！</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

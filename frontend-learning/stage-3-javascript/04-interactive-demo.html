@@ -1,0 +1,402 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>第4课：综合交互小项目</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Microsoft YaHei", sans-serif;
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      min-height: 100vh;
+      padding: 20px;
+      color: #eee;
+    }
+
+    h1 {
+      text-align: center;
+      color: #e94560;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      text-align: center;
+      color: #888;
+      margin-bottom: 30px;
+    }
+
+    /* 主题切换 */
+    body.light {
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      color: #333;
+    }
+    body.light .card { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    body.light .card h2 { color: #333; }
+    body.light .task-item { background: #f8f9fa; color: #333; }
+    body.light .stats { background: #f0f0f0; }
+    body.light .task-item.done { background: #d4edda; }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #1a1a2e;
+      border: 1px solid #333;
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .card h2 {
+      color: #e94560;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    /* 主题切换按钮 */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #e94560;
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 14px;
+      box-shadow: 0 2px 10px rgba(233,69,96,0.3);
+    }
+    .theme-toggle:hover { background: #c73652; }
+
+    /* 输入区 */
+    .input-group {
+      display: flex;
+      gap: 10px;
+    }
+    .input-group input {
+      flex: 1;
+      padding: 12px 15px;
+      border: 2px solid #333;
+      border-radius: 8px;
+      background: #16213e;
+      color: #eee;
+      font-size: 15px;
+    }
+    .input-group input:focus {
+      outline: none;
+      border-color: #e94560;
+    }
+    body.light .input-group input {
+      background: white;
+      color: #333;
+      border-color: #ddd;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      transition: transform 0.2s;
+    }
+    .btn:hover { transform: scale(1.05); }
+    .btn-primary { background: #e94560; color: white; }
+    .btn-success { background: #2ecc71; color: white; }
+    .btn-danger  { background: #e74c3c; color: white; }
+
+    /* 统计 */
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      background: #16213e;
+      border-radius: 8px;
+      padding: 12px;
+      margin: 15px 0;
+    }
+    .stats div {
+      text-align: center;
+    }
+    .stats .num {
+      font-size: 24px;
+      font-weight: bold;
+      color: #e94560;
+    }
+    .stats .label {
+      font-size: 12px;
+      color: #888;
+    }
+
+    /* 任务筛选 */
+    .filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    .filter-btn {
+      padding: 6px 16px;
+      border: 1px solid #333;
+      border-radius: 20px;
+      background: transparent;
+      color: #888;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .filter-btn.active {
+      background: #e94560;
+      color: white;
+      border-color: #e94560;
+    }
+    body.light .filter-btn { border-color: #ddd; }
+
+    /* 任务列表 */
+    #task-list {
+      list-style: none;
+    }
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 15px;
+      background: #16213e;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      transition: all 0.3s;
+    }
+    .task-item:hover {
+      transform: translateX(5px);
+    }
+    .task-item.done {
+      opacity: 0.6;
+      background: #1a2a1a;
+    }
+    .task-item.done .task-text {
+      text-decoration: line-through;
+      color: #888;
+    }
+    .task-check {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+    .task-text {
+      flex: 1;
+      word-break: break-all;
+    }
+    .task-delete {
+      background: none;
+      border: none;
+      color: #e74c3c;
+      cursor: pointer;
+      font-size: 18px;
+      padding: 0 5px;
+    }
+    .task-delete:hover { color: #c0392b; }
+  </style>
+</head>
+<body>
+
+  <button class="theme-toggle" onclick="toggleTheme()">🌓 切换主题</button>
+
+  <div class="container">
+    <h1>📋 智能待办清单</h1>
+    <p class="subtitle">用 JavaScript 打造一个完整的交互应用</p>
+
+    <div class="card">
+      <h2>✨ 添加任务</h2>
+      <div class="input-group">
+        <input type="text" id="task-input" placeholder="输入新任务..." onkeydown="if(event.key==='Enter') addTask()">
+        <button class="btn btn-primary" onclick="addTask()">添加</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📊 统计</h2>
+      <div class="stats">
+        <div>
+          <div class="num" id="total-count">0</div>
+          <div class="label">总任务</div>
+        </div>
+        <div>
+          <div class="num" id="done-count" style="color:#2ecc71;">0</div>
+          <div class="label">已完成</div>
+        </div>
+        <div>
+          <div class="num" id="pending-count" style="color:#f39c12;">0</div>
+          <div class="label">待完成</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📌 任务列表</h2>
+      <div class="filters">
+        <button class="filter-btn active" onclick="setFilter('all', this)">全部</button>
+        <button class="filter-btn" onclick="setFilter('pending', this)">待办</button>
+        <button class="filter-btn" onclick="setFilter('done', this)">已完成</button>
+      </div>
+      <ul id="task-list"></ul>
+      <button class="btn btn-danger" onclick="clearAll()" style="width:100%; margin-top:10px;">
+        🗑️ 清空所有任务
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // ====== 任务管理应用 ======
+
+    // 数据
+    let tasks = [];
+    let currentFilter = "all";
+    let nextId = 1;
+
+    // 添加默认示例任务
+    tasks.push({ id: nextId++, text: "学习 HTML", done: true });
+    tasks.push({ id: nextId++, text: "学习 CSS", done: true });
+    tasks.push({ id: nextId++, text: "学习 JavaScript", done: false });
+    tasks.push({ id: nextId++, text: "做一个综合项目", done: false });
+
+    // ====== 核心操作 ======
+
+    function addTask() {
+      let input = document.getElementById("task-input");
+      let text = input.value.trim();
+      if (text === "") {
+        alert("请输入任务内容！");
+        return;
+      }
+
+      tasks.push({
+        id: nextId++,
+        text: text,
+        done: false
+      });
+
+      input.value = "";
+      render();
+    }
+
+    function toggleTask(id) {
+      let task = tasks.find(t => t.id === id);
+      if (task) {
+        task.done = !task.done;
+        render();
+      }
+    }
+
+    function deleteTask(id) {
+      tasks = tasks.filter(t => t.id !== id);
+      render();
+    }
+
+    function clearAll() {
+      if (confirm("确定要清空所有任务吗？")) {
+        tasks = [];
+        render();
+      }
+    }
+
+    // ====== 筛选 ======
+
+    function setFilter(filter, btn) {
+      currentFilter = filter;
+      // 更新按钮样式
+      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      render();
+    }
+
+    function getFilteredTasks() {
+      if (currentFilter === "all") return tasks;
+      if (currentFilter === "done") return tasks.filter(t => t.done);
+      return tasks.filter(t => !t.done);
+    }
+
+    // ====== 渲染 ======
+
+    function render() {
+      let filteredTasks = getFilteredTasks();
+      let list = document.getElementById("task-list");
+      list.innerHTML = "";
+
+      if (filteredTasks.length === 0) {
+        list.innerHTML = '<li style="text-align:center; padding:20px; color:#888;">暂无任务 🎉</li>';
+      } else {
+        filteredTasks.forEach(task => {
+          let li = document.createElement("li");
+          li.className = "task-item" + (task.done ? " done" : "");
+
+          // 复选框
+          let checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.className = "task-check";
+          checkbox.checked = task.done;
+          checkbox.onclick = () => toggleTask(task.id);
+
+          // 文本
+          let span = document.createElement("span");
+          span.className = "task-text";
+          span.textContent = task.text;
+
+          // 删除按钮
+          let delBtn = document.createElement("button");
+          delBtn.className = "task-delete";
+          delBtn.textContent = "✕";
+          delBtn.onclick = () => deleteTask(task.id);
+
+          li.appendChild(checkbox);
+          li.appendChild(span);
+          li.appendChild(delBtn);
+          list.appendChild(li);
+        });
+      }
+
+      // 更新统计
+      updateStats();
+    }
+
+    function updateStats() {
+      document.getElementById("total-count").textContent = tasks.length;
+      document.getElementById("done-count").textContent = tasks.filter(t => t.done).length;
+      document.getElementById("pending-count").textContent = tasks.filter(t => !t.done).length;
+    }
+
+    // ====== 主题切换 ======
+
+    function toggleTheme() {
+      document.body.classList.toggle("light");
+    }
+
+    // ====== 初始化 ======
+    render();
+  </script>
+
+  <hr>
+
+  <h2 style="text-align:center; margin-top:20px;">🎯 本节课学到了什么？</h2>
+  <div class="card" style="max-width:500px; margin:20px auto;">
+    <ul style="padding-left:20px;">
+      <li>使用数组存储数据</li>
+      <li>增删改查操作（CRUD）</li>
+      <li>条件筛选功能</li>
+      <li>统计数字实时更新</li>
+      <li>主题切换（CSS 和 JS 结合）</li>
+      <li>事件绑定与 DOM 渲染</li>
+    </ul>
+  </div>
+
+  <h2 style="text-align:center;">✏️ 进阶挑战</h2>
+  <p style="text-align:center; max-width:500px; margin:10px auto;">
+    1. 添加 localStorage 保存任务（刷新不丢失）<br>
+    2. 添加"编辑任务"功能<br>
+    3. 添加优先级（高/中/低）标记
+  </p>
+
+  <br><br>
+</body>
+</html>

@@ -1,0 +1,262 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>CSS 进阶第1课：动画与过渡</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Microsoft YaHei", sans-serif; background: #1a1a2e; color: #eee; padding: 20px; line-height: 1.8; }
+    h1 { text-align: center; color: #e94560; margin-bottom: 30px; }
+    .card { background: #16213e; border-radius: 10px; padding: 20px; margin: 15px 0; }
+    .card h2 { color: #f39c12; font-size: 16px; margin-top: 0; }
+    pre { background: #0f3460; padding: 15px; border-radius: 8px; overflow-x: auto; color: #53d769; font-size: 14px; }
+    code { background: #0f3460; padding: 2px 6px; border-radius: 3px; color: #53d769; }
+
+    /* ====== 演示容器 ====== */
+    .demo-box {
+      display: flex; gap: 20px; flex-wrap: wrap; align-items: center;
+      padding: 20px; background: #0f3460; border-radius: 8px; margin: 10px 0; min-height: 120px;
+    }
+
+    /* ====== 1. 过渡 transition ====== */
+    .trans-box {
+      width: 80px; height: 80px; background: #e94560; border-radius: 8px;
+      transition: all 0.5s ease; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .trans-box:hover {
+      width: 120px; background: #f39c12; border-radius: 50%;
+      transform: rotate(180deg);
+    }
+
+    /* ====== 2. 关键帧动画 @keyframes ====== */
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-40px); }
+    }
+    .bounce-box {
+      width: 80px; height: 80px; background: #3498db; border-radius: 8px;
+      animation: bounce 1s ease infinite;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.6; }
+    }
+    .pulse-circle {
+      width: 80px; height: 80px; background: #2ecc71; border-radius: 50%;
+      animation: pulse 1.5s ease infinite;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .spinner {
+      width: 60px; height: 60px; border: 8px solid #333;
+      border-top-color: #e94560; border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    /* ====== 3. 组合动画 ====== */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      25% { transform: translateY(-15px) rotate(5deg); }
+      75% { transform: translateY(5px) rotate(-5deg); }
+    }
+    .float-box {
+      width: 80px; height: 80px; background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 20px;
+      animation: float 3s ease-in-out infinite;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ====== 4. 加载动画 ====== */
+    .loader-dots {
+      display: flex; gap: 8px;
+    }
+    .loader-dots div {
+      width: 15px; height: 15px; background: #e94560; border-radius: 50%;
+      animation: dotBounce 0.6s ease infinite alternate;
+    }
+    .loader-dots div:nth-child(2) { animation-delay: 0.2s; }
+    .loader-dots div:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes dotBounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-20px); }
+    }
+
+    /* ====== 5. 进度条动画 ====== */
+    @keyframes progressBar {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    .progress-container {
+      width: 100%; height: 20px; background: #0f3460; border-radius: 10px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; background: linear-gradient(90deg, #e94560, #f39c12);
+      border-radius: 10px;
+      animation: progressBar 3s ease forwards;
+    }
+    .progress-container:nth-child(2) .progress-fill {
+      animation-duration: 2s;
+      background: linear-gradient(90deg, #3498db, #2ecc71);
+    }
+
+    /* ====== 6. animation 属性详解 ====== */
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+    th, td { border: 1px solid #333; padding: 8px; text-align: left; font-size: 14px; }
+    th { background: #e94560; }
+
+    /* 控制按钮 */
+    button { background: #e94560; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+    button:hover { background: #c73652; }
+
+    .paused { animation-play-state: paused !important; }
+  </style>
+</head>
+<body>
+
+  <h1>🎬 CSS 动画与过渡</h1>
+
+  <div class="card">
+    <h2>1️⃣ transition — 平滑过渡</h2>
+    <p><b>功能：</b>当元素属性发生变化时，平滑变化而不是瞬间跳变。</p>
+    <pre>
+.box {
+  transition: all 0.5s ease;
+  /*         属性 时长   缓动函数 */
+}
+.box:hover {
+  transform: rotate(180deg);
+  border-radius: 50%;
+}
+    </pre>
+    <div class="demo-box">
+      <div class="trans-box">◀ 悬停</div>
+      <div class="trans-box" style="transition-delay:0.2s;">⏳ 延迟</div>
+    </div>
+    <p>💡 把鼠标移上去试试！第二个有 0.2s 延迟。</p>
+  </div>
+
+  <div class="card">
+    <h2>2️⃣ @keyframes — 关键帧动画</h2>
+    <p><b>功能：</b>定义多步骤的复杂动画。</p>
+    <pre>
+@keyframes bounce {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-40px); }
+  100% { transform: translateY(0); }
+}
+.box {
+  animation: bounce 1s ease infinite;
+  /*        名称     时长 方式   循环 */
+}
+    </pre>
+    <div class="demo-box">
+      <div class="bounce-box">🎾 弹跳</div>
+      <div class="pulse-circle">💓 脉冲</div>
+      <div class="spinner"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>3️⃣ 组合动画效果</h2>
+    <div class="demo-box" style="justify-content:center;">
+      <div class="float-box">🎈 漂浮</div>
+    </div>
+    <p>多个变换组合 + 不同时间点的关键帧 = 更自然的动画</p>
+  </div>
+
+  <div class="card">
+    <h2>4️⃣ 常见实用动画</h2>
+
+    <p><b>Loading 加载动画：</b></p>
+    <div class="demo-box">
+      <div class="loader-dots">
+        <div></div><div></div><div></div>
+      </div>
+      <span style="margin-left:10px;">加载中...</span>
+    </div>
+
+    <p><b>进度条动画：</b></p>
+    <div class="demo-box" style="flex-direction:column;">
+      <div class="progress-container">
+        <div class="progress-fill"></div>
+      </div>
+      <div class="progress-container">
+        <div class="progress-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📊 animation 完整属性</h2>
+    <table>
+      <tr><th>属性</th><th>作用</th><th>示例</th></tr>
+      <tr><td>animation-name</td><td>动画名称</td><td>bounce</td></tr>
+      <tr><td>animation-duration</td><td>持续时间</td><td>2s, 500ms</td></tr>
+      <tr><td>animation-timing-function</td><td>速度曲线</td><td>ease, linear, ease-in-out</td></tr>
+      <tr><td>animation-delay</td><td>延迟开始</td><td>1s</td></tr>
+      <tr><td>animation-iteration-count</td><td>循环次数</td><td>2, infinite</td></tr>
+      <tr><td>animation-direction</td><td>播放方向</td><td>normal, alternate, reverse</td></tr>
+      <tr><td>animation-fill-mode</td><td>结束状态</td><td>forwards, backwards</td></tr>
+      <tr><td>animation-play-state</td><td>暂停/运行</td><td>running, paused</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>🎯 动手：控制动画</h2>
+    <div class="demo-box" style="flex-direction:column;">
+      <div id="control-demo" class="float-box" style="margin:10px auto;">🎮</div>
+      <div>
+        <button onclick="togglePlay()">⏯ 暂停/继续</button>
+        <button onclick="changeSpeed('2')">🐢 慢速 2s</button>
+        <button onclick="changeSpeed('0.5')">🐇 快速 0.5s</button>
+        <button onclick="resetAnim()">🔄 重置</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📌 最佳实践</h2>
+    <ul>
+      <li>优先使用 <code>transform</code> 和 <code>opacity</code> 做动画（性能好）</li>
+      <li>避免动画 <code>width</code>、<code>height</code>（触发重排，卡顿）</li>
+      <li>使用 <code>will-change</code> 提示浏览器优化</li>
+      <li>移动端动画时长建议 200-400ms</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>✏️ 动手试试</h2>
+    <p>1. 创建一个"心跳"动画（scale 缩放）<br>
+       2. 做一个按钮悬停效果，带阴影变化<br>
+       3. 尝试用多个关键帧（0%, 25%, 50%, 75%, 100%）</p>
+  </div>
+
+  <script>
+    const demo = document.getElementById("control-demo");
+
+    function togglePlay() {
+      demo.classList.toggle("paused");
+    }
+
+    function changeSpeed(duration) {
+      demo.style.animationDuration = duration + "s";
+    }
+
+    function resetAnim() {
+      demo.style.animation = "none";
+      void demo.offsetHeight; // 触发回流
+      demo.style.animation = "float 3s ease-in-out infinite";
+    }
+  </script>
+
+  <hr>
+  <p style="text-align:center; opacity:0.6;">🎨 动画让页面"活"起来，但不要过度使用！</p>
+</body>
+</html>

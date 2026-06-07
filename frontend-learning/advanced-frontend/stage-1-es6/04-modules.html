@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>ES6+ 第4课：ES Modules 模块化</title>
+  <style>
+    body { font-family: "Microsoft YaHei", sans-serif; background: #1a1a2e; color: #eee; padding: 20px; line-height: 1.8; }
+    h1 { text-align: center; color: #e94560; }
+    .card { background: #16213e; border-radius: 10px; padding: 20px; margin: 15px 0; }
+    .card h2 { color: #f39c12; font-size: 16px; margin-top: 0; }
+    pre { background: #0f3460; padding: 15px; border-radius: 8px; overflow-x: auto; color: #53d769; font-size: 14px; }
+    code { background: #0f3460; padding: 2px 6px; border-radius: 3px; color: #53d769; }
+    .output-box { background: #0f3460; border-left: 4px solid #e94560; padding: 10px 15px; border-radius: 0 5px 5px 0; min-height: 30px; }
+    button { background: #e94560; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+    button:hover { background: #c73652; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #333; padding: 8px; text-align: left; }
+    th { background: #e94560; }
+  </style>
+</head>
+<body>
+
+  <h1>📦 ES Modules 模块化</h1>
+
+  <div class="card">
+    <h2>🤔 为什么需要模块化？</h2>
+    <p>当项目变大，把所有代码写在一个文件里会变成"意大利面条" 🍝</p>
+    <p>模块化就是把代码<strong>按功能拆分成多个文件</strong>，每个文件只管一件事。</p>
+    <p>好处：</p>
+    <ul>
+      <li>✅ 代码更整洁、易维护</li>
+      <li>✅ 可以复用</li>
+      <li>✅ 避免命名冲突</li>
+      <li>✅ 便于团队协作</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>📤 export — 导出</h2>
+    <pre>
+// ===== math.js =====
+// 命名导出（可以导出多个）
+export const PI = 3.14159;
+export function add(a, b) { return a + b; }
+export function multiply(a, b) { return a * b; }
+
+// 默认导出（一个文件只能有一个）
+export default class Calculator {
+  square(x) { return x * x; }
+}
+    </pre>
+  </div>
+
+  <div class="card">
+    <h2>📥 import — 导入</h2>
+    <pre>
+// ===== app.js =====
+// 导入命名导出
+import { PI, add, multiply } from "./math.js";
+
+// 导入默认导出
+import Calculator from "./math.js";
+
+// 全部导入为一个对象
+import * as MathUtils from "./math.js";
+console.log(MathUtils.PI);
+
+// 重命名
+import { add as sum } from "./math.js";
+    </pre>
+  </div>
+
+  <div class="card">
+    <h2>⚠️ 重要：浏览器中使用 ES Modules</h2>
+    <pre>
+&lt;!-- 必须加 type="module" --&gt;
+&lt;script type="module" src="app.js"&gt;&lt;/script&gt;
+
+&lt;!--
+  注意：
+  1. 不能用 file:// 协议打开（双击）
+  2. 必须通过服务器打开（VS Code Live Server 插件）
+  3. 或者在命令行用 npx serve .
+--&gt;
+    </pre>
+    <p style="color:#f39c12;">💡 本节课先通过内联方式演示概念。实际项目中会用构建工具（Vite）来处理。</p>
+  </div>
+
+  <div class="card">
+    <h2>📊 模块 vs 传统方式</h2>
+    <table>
+      <tr><th>对比</th><th>传统 &lt;script&gt;</th><th>ES Module</th></tr>
+      <tr><td>作用域</td><td>全局，变量互相干扰</td><td>每个文件独立作用域</td></tr>
+      <tr><td>加载方式</td><td>同步，阻塞渲染</td><td>异步，按需加载</td></tr>
+      <tr><td>依赖管理</td><td>手动调整 script 顺序</td><td>import 自动管理</td></tr>
+      <tr><td>复用性</td><td>难</td><td>导出/导入轻松复用</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>🎯 互动：模拟模块化</h2>
+    <p>下面模拟模块化的工作方式——点击按钮使用不同"模块"的功能：</p>
+    <button onclick="useMathModule()">🔢 数学模块</button>
+    <button onclick="useStringModule()">📝 字符串模块</button>
+    <button onclick="useDateModule()">📅 日期模块</button>
+    <div id="module-output" class="output-box">点击查看各模块的效果</div>
+  </div>
+
+  <div class="card">
+    <h2>🌰 真实项目结构示例</h2>
+    <pre>
+src/
+├── index.js          ← 入口文件
+├── utils/            ← 工具模块
+│   ├── math.js
+│   └── format.js
+├── components/       ← UI 组件
+│   ├── Header.js
+│   ├── Footer.js
+│   └── UserCard.js
+├── services/         ← API 请求
+│   └── api.js
+└── styles/           ← 样式
+    └── main.css
+    </pre>
+  </div>
+
+  <div class="card">
+    <h2>📌 总结</h2>
+    <ul>
+      <li><b>export</b> — 导出变量/函数/类供其他文件使用</li>
+      <li><b>import</b> — 从其他文件引入功能</li>
+      <li><b>export default</b> — 默认导出（每文件一个）</li>
+      <li><b>type="module"</b> — 在 HTML 中声明</li>
+      <li>Node.js 后端使用 CommonJS（require/module.exports），前端主要用 ES Modules</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>✏️ 动手试试（需要 VS Code Live Server）</h2>
+    <p>1. 安装 VS Code Live Server 插件<br>
+       2. 创建两个 .js 文件，用 export/import 互相引用<br>
+       3. 用 Live Server 打开查看效果</p>
+    <p>或者暂时跳过，下一阶段用 Vite 时会自动支持模块！</p>
+  </div>
+
+  <script>
+    // ====== 模拟模块化演示 ======
+
+    // 模拟"数学模块"
+    function useMathModule() {
+      const PI = 3.14159;
+      const add = (a, b) => a + b;
+      const multiply = (a, b) => a * b;
+      const factorial = n => n <= 1 ? 1 : n * factorial(n - 1);
+
+      document.getElementById("module-output").innerHTML = `
+        <b>🔢 数学模块：</b><br>
+        PI = ${PI}<br>
+        add(10, 20) = ${add(10, 20)}<br>
+        multiply(6, 7) = ${multiply(6, 7)}<br>
+        factorial(5) = ${factorial(5)}
+      `;
+    }
+
+    // 模拟"字符串模块"
+    function useStringModule() {
+      const capitalize = s => s.charAt(0).toUpperCase() + s.slice(1);
+      const reverse = s => s.split("").reverse().join("");
+      const countChars = s => s.length;
+      const toSlug = s => s.toLowerCase().replace(/\s+/g, "-");
+
+      document.getElementById("module-output").innerHTML = `
+        <b>📝 字符串模块：</b><br>
+        capitalize("hello") = "${capitalize("hello")}"<br>
+        reverse("world") = "${reverse("world")}"<br>
+        countChars("你好世界") = ${countChars("你好世界")}<br>
+        toSlug("Hello World") = "${toSlug("Hello World")}"
+      `;
+    }
+
+    // 模拟"日期模块"
+    function useDateModule() {
+      const now = new Date();
+      const formatDate = d =>
+        `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+      const formatTime = d =>
+        `${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
+      const isWeekend = d => {
+        const day = d.getDay();
+        return day === 0 || day === 6;
+      };
+      const daysUntil = (dateStr) => {
+        const target = new Date(dateStr);
+        const diff = target - now;
+        return Math.ceil(diff / (1000 * 60 * 60 * 24));
+      };
+
+      document.getElementById("module-output").innerHTML = `
+        <b>📅 日期模块：</b><br>
+        当前日期：${formatDate(now)}<br>
+        当前时间：${formatTime(now)}<br>
+        今天是${isWeekend(now) ? "🎉 周末！" : "💼 工作日"}<br>
+        距离 2027-01-01 还有 ${daysUntil("2027-01-01")} 天
+      `;
+    }
+  </script>
+
+  <hr>
+  <p style="text-align:center; opacity:0.6;">📦 模块化是前端工程化的基石，下一阶段我们会用 Vite 来真正体验它！</p>
+</body>
+</html>

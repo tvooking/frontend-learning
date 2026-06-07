@@ -1,0 +1,259 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>CSS 进阶第2课：伪元素与高级技巧</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Microsoft YaHei", sans-serif; background: #1a1a2e; color: #eee; padding: 20px; line-height: 1.8; }
+    h1 { text-align: center; color: #e94560; margin-bottom: 30px; }
+    .card { background: #16213e; border-radius: 10px; padding: 20px; margin: 15px 0; }
+    .card h2 { color: #f39c12; font-size: 16px; margin-top: 0; }
+    pre { background: #0f3460; padding: 15px; border-radius: 8px; overflow-x: auto; color: #53d769; font-size: 14px; }
+    code { background: #0f3460; padding: 2px 6px; border-radius: 3px; color: #53d769; }
+
+    /* ====== 1. ::before 和 ::after ====== */
+    .quote {
+      font-size: 20px; padding: 20px 40px; background: #0f3460;
+      border-radius: 8px; margin: 10px 0; position: relative;
+    }
+    .quote::before {
+      content: "\201C";  /* 左引号 Unicode */
+      font-size: 60px; color: #e94560;
+      position: absolute; top: -10px; left: 5px;
+    }
+    .quote::after {
+      content: "\201D";  /* 右引号 */
+      font-size: 60px; color: #e94560;
+      position: absolute; bottom: -30px; right: 5px;
+    }
+
+    /* ====== 2. 图标 ====== */
+    .icon-link {
+      color: #eee; text-decoration: none; padding: 5px 10px;
+      display: inline-flex; align-items: center; gap: 5px;
+    }
+    .icon-link::before {
+      content: "🔗";
+    }
+    .icon-link:hover::before {
+      content: "🔒";
+    }
+
+    /* ====== 3. 按钮特效 ====== */
+    .btn-fancy {
+      background: transparent; color: #e94560; border: 2px solid #e94560;
+      padding: 12px 30px; border-radius: 5px; font-size: 16px;
+      cursor: pointer; position: relative; overflow: hidden;
+      transition: color 0.3s; z-index: 1;
+    }
+    .btn-fancy::before {
+      content: "";
+      position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: #e94560;
+      transition: left 0.3s;
+      z-index: -1;
+    }
+    .btn-fancy:hover {
+      color: white;
+    }
+    .btn-fancy:hover::before {
+      left: 0;
+    }
+
+    /* ====== 4. 渐变边框 ====== */
+    .gradient-border {
+      width: 200px; height: 100px; background: #16213e;
+      border-radius: 10px; margin: 10px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .gradient-border::before {
+      content: "";
+      position: absolute; top: -3px; left: -3px; right: -3px; bottom: -3px;
+      background: linear-gradient(45deg, #e94560, #3498db, #2ecc71, #f39c12);
+      border-radius: 13px;
+      z-index: -1;
+      background-size: 300% 300%;
+      animation: gradientMove 3s ease infinite;
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ====== 5. 自定义复选框 ====== */
+    .custom-checkbox {
+      display: flex; align-items: center; gap: 10px; cursor: pointer;
+    }
+    .custom-checkbox input { display: none; }
+    .checkmark {
+      width: 24px; height: 24px; border: 2px solid #e94560;
+      border-radius: 4px; position: relative;
+      transition: all 0.3s;
+    }
+    .custom-checkbox input:checked + .checkmark {
+      background: #e94560;
+      border-color: #e94560;
+    }
+    .custom-checkbox input:checked + .checkmark::after {
+      content: "";
+      position: absolute; top: 2px; left: 7px;
+      width: 6px; height: 12px;
+      border: solid white; border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
+    /* ====== 6. CSS 变量 ====== */
+    :root {
+      --primary: #e94560;
+      --secondary: #3498db;
+      --bg-dark: #1a1a2e;
+      --bg-card: #16213e;
+      --radius: 10px;
+      --shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .theme-demo {
+      background: var(--bg-card); padding: 20px; border-radius: var(--radius);
+      box-shadow: var(--shadow); margin: 10px 0;
+    }
+    .theme-demo h3 { color: var(--primary); }
+    .theme-demo p { color: #ccc; }
+
+    /* ====== 7. 渐变背景 ====== */
+    .gradient-demo {
+      width: 100%; height: 100px; border-radius: 8px; margin: 10px 0;
+      display: flex; align-items: center; justify-content: center; font-weight: bold;
+    }
+    .grad-1 { background: linear-gradient(to right, #e94560, #f39c12); }
+    .grad-2 { background: linear-gradient(135deg, #667eea, #764ba2); }
+    .grad-3 { background: radial-gradient(circle, #2ecc71, #27ae60); }
+    .grad-4 { background: conic-gradient(from 0deg, #e94560, #f39c12, #2ecc71, #3498db, #e94560); }
+
+    .demo-box {
+      display: flex; gap: 20px; flex-wrap: wrap; align-items: center;
+      padding: 20px; background: #0f3460; border-radius: 8px; margin: 10px 0;
+    }
+
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+    th, td { border: 1px solid #333; padding: 8px; text-align: left; }
+    th { background: #e94560; }
+  </style>
+</head>
+<body>
+
+  <h1>✨ CSS 伪元素与高级技巧</h1>
+
+  <div class="card">
+    <h2>1️⃣ ::before 和 ::after — 伪元素</h2>
+    <p><b>功能：</b>在元素内容的前/后插入额外内容，不需要修改 HTML。</p>
+    <pre>
+.element::before {
+  content: "★";    /* 必须要有 content */
+  color: gold;
+  /* 配合 position 可以精确定位 */
+}
+
+.element::after {
+  content: "";
+  /* 空的 content 也可以用于装饰 */
+}
+    </pre>
+    <div class="quote">
+      CSS 伪元素是前端开发中非常强大且常用的技巧。
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>2️⃣ 实际应用：图标 + 按钮特效</h2>
+    <div class="demo-box" style="flex-direction:column; align-items:flex-start;">
+      <a href="#" class="icon-link">返回首页</a>
+      <a href="#" class="icon-link">下载文件</a>
+      <br>
+      <button class="btn-fancy">✨ 悬停特效</button>
+      <button class="btn-fancy" style="border-color:#3498db; color:#3498db;">🎨 另一个颜色</button>
+    </div>
+    <p>💡 ::before 做图标，悬停时切换图标内容，不需要额外 HTML 元素。</p>
+  </div>
+
+  <div class="card">
+    <h2>3️⃣ 渐变边框（伪元素 + 动画）</h2>
+    <div class="demo-box">
+      <div class="gradient-border">🌈 渐变边框</div>
+    </div>
+    <p>💡 核心技巧：在伪元素上设置渐变背景，放到主元素后面。</p>
+  </div>
+
+  <div class="card">
+    <h2>4️⃣ 自定义复选框（伪元素做勾选图标）</h2>
+    <div class="demo-box" style="flex-direction:column; align-items:flex-start;">
+      <label class="custom-checkbox">
+        <input type="checkbox">
+        <span class="checkmark"></span>
+        同意条款
+      </label>
+      <label class="custom-checkbox">
+        <input type="checkbox" checked>
+        <span class="checkmark"></span>
+        记住我
+      </label>
+    </div>
+    <p>💡 隐藏原生 checkbox，用 CSS 画一个新样式，::after 画勾。</p>
+  </div>
+
+  <div class="card">
+    <h2>5️⃣ CSS 变量</h2>
+    <pre>
+:root {
+  --primary: #e94560;       /* 定义变量 */
+  --radius: 10px;
+}
+
+.box {
+  color: var(--primary);    /* 使用变量 */
+  border-radius: var(--radius);
+}
+    </pre>
+    <div class="theme-demo">
+      <h3>🎨 使用 CSS 变量</h3>
+      <p>修改 :root 中的 --primary 值，所有用到的地方自动更新！</p>
+    </div>
+    <p>💡 CSS 变量让主题切换变得极其简单，后面的 React 项目中会用到。</p>
+  </div>
+
+  <div class="card">
+    <h2>6️⃣ 渐变类型一览</h2>
+    <div class="gradient-demo grad-1">linear-gradient（线性渐变）</div>
+    <div class="gradient-demo grad-2">135deg 对角线渐变</div>
+    <div class="gradient-demo grad-3">radial-gradient（径向渐变）</div>
+    <div class="gradient-demo grad-4">conic-gradient（锥形渐变）</div>
+  </div>
+
+  <div class="card">
+    <h2>📊 常用伪元素 vs 伪类</h2>
+    <table>
+      <tr><th>类型</th><th>写法</th><th>作用</th></tr>
+      <tr><td>伪元素</td><td>::before</td><td>在元素内部前面插入内容</td></tr>
+      <tr><td>伪元素</td><td>::after</td><td>在元素内部后面插入内容</td></tr>
+      <tr><td>伪元素</td><td>::first-letter</td><td>第一个字母</td></tr>
+      <tr><td>伪元素</td><td>::first-line</td><td>第一行</td></tr>
+      <tr><td>伪元素</td><td>::selection</td><td>选中文字时的样式</td></tr>
+      <tr><td>伪类</td><td>:hover</td><td>鼠标悬停</td></tr>
+      <tr><td>伪类</td><td>:nth-child(n)</td><td>第 n 个子元素</td></tr>
+      <tr><td>伪类</td><td>:not()</td><td>排除选择</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>✏️ 动手试试</h2>
+    <p>1. 用 ::before 给所有外部链接加一个 🔗 图标<br>
+       2. 用 nth-child() 给表格的奇偶行设置不同背景色<br>
+       3. 创建一个 CSS 变量主题，实现亮/暗模式切换</p>
+  </div>
+
+  <hr>
+  <p style="text-align:center; opacity:0.6;">🎯 伪元素是 CSS 中最强大的特性之一，掌握它能让你的页面更精致！</p>
+</body>
+</html>

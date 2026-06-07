@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>第3课：Flexbox 弹性布局</title>
+  <style>
+    body {
+      font-family: "Microsoft YaHei", sans-serif;
+      background: #f0f2f5;
+      padding: 20px;
+    }
+
+    h1 { text-align: center; color: #2c3e50; }
+
+    .section {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    /* 公共容器样式 */
+    .container {
+      background: #dfe6e9;
+      border-radius: 8px;
+      padding: 10px;
+      margin: 10px 0;
+      min-height: 80px;
+    }
+
+    .item {
+      background: #3498db;
+      color: white;
+      padding: 15px 25px;
+      margin: 5px;
+      border-radius: 5px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    /* 1. 水平排列（默认） */
+    .flex-row {
+      display: flex;
+    }
+
+    /* 2. 垂直排列 */
+    .flex-column {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 3. 水平居中 */
+    .flex-center {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* 4. 两端对齐 */
+    .flex-between {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* 5. 均匀分布 */
+    .flex-around {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    /* 6. 垂直居中 */
+    .flex-align {
+      display: flex;
+      align-items: center;
+      height: 120px;
+    }
+    .flex-align .item {
+      height: auto;
+    }
+    .flex-align .item:nth-child(2) { padding: 30px 25px; }
+    .flex-align .item:nth-child(3) { padding: 10px 25px; }
+
+    /* 7. 换行 */
+    .flex-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      width: 300px;
+    }
+    .flex-wrap .item {
+      width: 80px;
+    }
+
+    /* 8. flex: 1 等分 */
+    .flex-equal {
+      display: flex;
+    }
+    .flex-equal .item {
+      flex: 1;
+      margin: 5px;
+    }
+    .flex-equal .item:nth-child(2) {
+      background: #e67e22;
+      flex: 2;  /* 占两份 */
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📐 Flexbox 弹性布局</h1>
+
+  <div class="section">
+    <h2>① display: flex — 水平排列（默认）</h2>
+    <div class="container flex-row">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>② flex-direction: column — 垂直排列</h2>
+    <div class="container flex-column" style="width:200px;">
+      <div class="item">上</div>
+      <div class="item">中</div>
+      <div class="item">下</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>③ justify-content: center — 水平居中</h2>
+    <div class="container flex-center">
+      <div class="item">居中</div>
+      <div class="item">居中</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>④ justify-content: space-between — 两端对齐</h2>
+    <div class="container flex-between">
+      <div class="item">左</div>
+      <div class="item">中</div>
+      <div class="item">右</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>⑤ align-items: center — 垂直居中（经典）</h2>
+    <div class="container flex-align">
+      <div class="item">短</div>
+      <div class="item">比较长</div>
+      <div class="item">短</div>
+    </div>
+    <p>💡 <code>display: flex + justify-content: center + align-items: center</code> = 完全居中！</p>
+  </div>
+
+  <div class="section">
+    <h2>⑥ flex-wrap: wrap — 自动换行</h2>
+    <div class="container flex-wrap">
+      <div class="item">1</div><div class="item">2</div>
+      <div class="item">3</div><div class="item">4</div>
+      <div class="item">5</div><div class="item">6</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>⑦ flex: 1 — 等分空间</h2>
+    <div class="container flex-equal">
+      <div class="item">1</div>
+      <div class="item">2（flex:2）</div>
+      <div class="item">1</div>
+    </div>
+  </div>
+
+  <hr>
+
+  <h2>✏️ 动手试试</h2>
+  <p>用 Flexbox 做一个导航栏：左边是 logo，右边是几个菜单链接。</p>
+</body>
+</html>

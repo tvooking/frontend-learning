@@ -1,0 +1,193 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>第1课：变量与数据类型</title>
+  <style>
+    body {
+      font-family: "Microsoft YaHei", sans-serif;
+      background: #1a1a2e;
+      color: #eee;
+      padding: 20px;
+      line-height: 1.8;
+    }
+    h1 { text-align: center; color: #e94560; }
+    .card {
+      background: #16213e;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 15px 0;
+    }
+    .card h2 { color: #0f3460; background: #e94560; display: inline-block; padding: 3px 12px; border-radius: 5px; font-size: 16px; }
+    code {
+      background: #0f3460;
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: #53d769;
+    }
+    pre {
+      background: #0f3460;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+    .output {
+      background: #0f3460;
+      border-left: 4px solid #e94560;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border-radius: 0 5px 5px 0;
+    }
+    button {
+      background: #e94560;
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover { background: #c73652; }
+  </style>
+</head>
+<body>
+
+  <h1>📝 JavaScript 变量与数据类型</h1>
+
+  <div class="card">
+    <h2>打开控制台查看效果</h2>
+    <p>按 <code>F12</code> 或 <code>Ctrl+Shift+I</code> → 点 Console（控制台）</p>
+  </div>
+
+  <div class="card">
+    <h2>声明变量</h2>
+    <pre>
+// let — 可以重新赋值（推荐）
+let name = "小明";
+name = "小红";  // ✅ 可以改
+
+// const — 常量，不能改（推荐）
+const birthday = "2000-01-01";
+// birthday = "2001-01-01";  // ❌ 会报错
+
+// var — 旧方式（不推荐）
+var oldWay = "过时的写法";
+    </pre>
+  </div>
+
+  <div class="card">
+    <h2>数据类型</h2>
+    <pre>
+// 字符串 (String)
+let city = "北京";
+
+// 数字 (Number)
+let age = 25;
+let price = 19.9;
+
+// 布尔值 (Boolean)
+let isStudent = true;
+let isWorking = false;
+
+// 数组 (Array) — 列表
+let fruits = ["苹果", "香蕉", "橙子"];
+
+// 对象 (Object) — 键值对
+let person = {
+  name: "小明",
+  age: 25,
+  city: "北京"
+};
+
+// 查看类型
+console.log(typeof "hello");  // "string"
+console.log(typeof 42);       // "number"
+console.log(typeof true);     // "boolean"
+console.log(typeof []);       // "object"
+    </pre>
+  </div>
+
+  <div class="card">
+    <h2>互动演示</h2>
+    <button onclick="showGreeting()">点我打招呼 👋</button>
+    <button onclick="checkAge()">检查年龄 🎂</button>
+    <button onclick="listFruits()">水果列表 🍎</button>
+    <div id="demo-output" class="output">
+      点击上方按钮查看效果
+    </div>
+  </div>
+
+  <script>
+    // ====== JavaScript 从这里开始 ======
+
+    // 变量声明
+    let myName = "小明";
+    const myBirthYear = 2000;
+    let currentYear = 2026;
+    let myAge = currentYear - myBirthYear;
+
+    // 数组
+    let hobbyList = ["编程", "阅读", "旅行", "音乐"];
+
+    // 对象
+    let myInfo = {
+      name: "小明",
+      age: myAge,
+      city: "北京",
+      hobbies: hobbyList
+    };
+
+    // 打印到控制台
+    console.log("=== 变量练习 ===");
+    console.log("姓名:", myName);
+    console.log("年龄:", myAge);
+    console.log("个人信息:", myInfo);
+    console.log("爱好:", hobbyList);
+
+    // ====== 互动函数 ======
+    function showGreeting() {
+      let now = new Date();
+      let hour = now.getHours();
+      let greeting;
+
+      if (hour < 12) {
+        greeting = "早上好";
+      } else if (hour < 18) {
+        greeting = "下午好";
+      } else {
+        greeting = "晚上好";
+      }
+
+      document.getElementById("demo-output").innerHTML =
+        `👋 ${greeting}！我是 ${myName}，今年 ${myAge} 岁。`;
+    }
+
+    function checkAge() {
+      if (myAge >= 18) {
+        document.getElementById("demo-output").innerHTML =
+          `✅ ${myName} 今年 ${myAge} 岁，已成年。`;
+      } else {
+        document.getElementById("demo-output").innerHTML =
+          `🧒 ${myName} 今年 ${myAge} 岁，未成年。`;
+      }
+    }
+
+    function listFruits() {
+      let fruits = ["苹果 🍎", "香蕉 🍌", "橙子 🍊", "葡萄 🍇", "草莓 🍓"];
+      let html = "🍉 水果列表：<ul>";
+      for (let i = 0; i < fruits.length; i++) {
+        html += `<li>${fruits[i]}</li>`;
+      }
+      html += "</ul>";
+      document.getElementById("demo-output").innerHTML = html;
+    }
+  </script>
+
+  <hr>
+
+  <h2>✏️ 动手试试</h2>
+  <p>1. 在控制台（F12）试试：<code>console.log("你好，世界！")</code><br>
+     2. 创建一个你自己的对象，包含姓名、年龄、城市<br>
+     3. 试试 <code>typeof</code> 查看不同类型的值</p>
+</body>
+</html>

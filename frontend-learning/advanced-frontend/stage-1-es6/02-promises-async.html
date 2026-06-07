@@ -1,0 +1,234 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>ES6+ 第2课：Promise 与 async/await</title>
+  <style>
+    body { font-family: "Microsoft YaHei", sans-serif; background: #1a1a2e; color: #eee; padding: 20px; line-height: 1.8; }
+    h1 { text-align: center; color: #e94560; }
+    .card { background: #16213e; border-radius: 10px; padding: 20px; margin: 15px 0; }
+    .card h2 { color: #f39c12; font-size: 16px; margin-top: 0; }
+    pre { background: #0f3460; padding: 15px; border-radius: 8px; overflow-x: auto; color: #53d769; font-size: 14px; }
+    code { background: #0f3460; padding: 2px 6px; border-radius: 3px; color: #53d769; }
+    .output-box { background: #0f3460; border-left: 4px solid #e94560; padding: 10px 15px; border-radius: 0 5px 5px 0; min-height: 40px; font-size: 14px; }
+    button { background: #e94560; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+    button:hover { background: #c73652; }
+    .log-entry { padding: 4px 0; border-bottom: 1px solid #333; }
+    .log-entry:last-child { border-bottom: none; }
+    .success { color: #2ecc71; }
+    .pending { color: #f39c12; }
+    .error { color: #e74c3c; }
+    .step-indicator { display: flex; gap: 10px; margin: 10px 0; flex-wrap: wrap; }
+    .step { padding: 6px 14px; border-radius: 20px; font-size: 13px; background: #0f3460; }
+    .step.active { background: #f39c12; color: #1a1a2e; font-weight: bold; }
+    .step.done { background: #2ecc71; color: #1a1a2e; }
+  </style>
+</head>
+<body>
+
+  <h1>⏳ Promise 与 async/await</h1>
+
+  <div class="card">
+    <h2>🤔 为什么需要异步？</h2>
+    <p>JavaScript 是<strong>单线程</strong>的——一次只能做一件事。如果请求网络数据需要 3 秒，页面就会卡死 3 秒。</p>
+    <p>异步编程就是：<strong>不等待</strong>，先去做别的事，等数据回来了再处理。</p>
+  </div>
+
+  <div class="card">
+    <h2>📜 回调地狱 Callback Hell（旧方式）</h2>
+    <pre>
+// ❌ 嵌套太多，难以维护
+getUser(1, (user) => {
+  getPosts(user.id, (posts) => {
+    getComments(posts[0].id, (comments) => {
+      console.log(comments);
+    });
+  });
+});
+    </pre>
+    <p style="color:#e74c3c;">这就是为什么需要 Promise！</p>
+  </div>
+
+  <div class="card">
+    <h2>🤝 Promise 是什么？</h2>
+    <p>Promise 就像一个<strong>外卖订单</strong>：</p>
+    <ul>
+      <li><b>pending（等待中）</b> — 订单已下，还没送到</li>
+      <li><b>fulfilled（已完成）</b> — 外卖送到了 ✅</li>
+      <li><b>rejected（已拒绝）</b> — 外卖送不了 ❌</li>
+    </ul>
+    <pre>
+// 创建一个 Promise
+const order = new Promise((resolve, reject) => {
+  // 模拟 2 秒后送达
+  setTimeout(() => {
+    const success = true;
+    if (success) {
+      resolve("🍔 外卖到了！");
+    } else {
+      reject("😢 送不了...");
+    }
+  }, 2000);
+});
+
+// 使用 Promise
+order
+  .then(result => console.log(result))  // 成功时
+  .catch(error => console.log(error));  // 失败时
+    </pre>
+  </div>
+
+  <div class="card">
+    <h2>⚡ async/await — 更优雅的方式</h2>
+    <pre>
+// async 声明异步函数
+async function getOrder() {
+  try {
+    const result = await order;  // await 等待 Promise 完成
+    console.log(result);          // "🍔 外卖到了！"
+  } catch (error) {
+    console.log(error);           // 处理错误
+  }
+}
+
+// 💡 await 只能在 async 函数内部使用
+// 💡 try/catch 用于处理错误，相当于 .catch()
+    </pre>
+    <p>async/await 让异步代码<strong>看起来像同步代码</strong>，更容易阅读和维护。</p>
+  </div>
+
+  <div class="card">
+    <h2>🎮 互动：模拟点外卖</h2>
+    <div class="step-indicator" id="steps">
+      <span class="step" id="step1">① 下单</span>
+      <span class="step" id="step2">② 准备中</span>
+      <span class="step" id="step3">③ 配送中</span>
+      <span class="step" id="step4">④ 送达</span>
+    </div>
+    <button onclick="orderFood()">🍔 点个外卖</button>
+    <div id="order-output" class="output-box">点击按钮开始模拟</div>
+  </div>
+
+  <div class="card">
+    <h2>📊 实际应用：并行请求</h2>
+    <p>使用 <code>Promise.all()</code> 同时请求多个数据：</p>
+    <pre>
+async function getDashboardData() {
+  const [user, posts, notifications] = await Promise.all([
+    fetchUser(),           // 获取用户信息
+    fetchPosts(),          // 获取文章列表
+    fetchNotifications()   // 获取通知
+  ]);
+  return { user, posts, notifications };
+}
+    </pre>
+    <button onclick="demoParallel()">🚀 模拟并行请求</button>
+    <div id="parallel-output" class="output-box"></div>
+  </div>
+
+  <div class="card">
+    <h2>📌 总结</h2>
+    <ul>
+      <li><b>Promise</b> — 解决回调地狱</li>
+      <li><b>.then().catch()</b> — Promise 的链式调用</li>
+      <li><b>async/await</b> — 让异步代码更可读</li>
+      <li><b>try/catch</b> — 处理 await 中的错误</li>
+      <li><b>Promise.all()</b> — 并行执行多个 Promise</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>✏️ 动手试试</h2>
+    <p>打开控制台（F12），自己创建一个 Promise：</p>
+    <pre>
+const myPromise = new Promise((resolve) => {
+  setTimeout(() => resolve("👋 2秒后显示"), 2000);
+});
+myPromise.then(msg => console.log(msg));
+    </pre>
+  </div>
+
+  <script>
+    // ====== 模拟点外卖（展示 Promise 链） ======
+
+    // 模拟异步操作（每个步骤耗时1秒）
+    const delay = ms => new Promise(r => setTimeout(r, ms));
+
+    function resetSteps() {
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById(`step${i}`).className = "step";
+      }
+    }
+
+    async function orderFood() {
+      const output = document.getElementById("order-output");
+      resetSteps();
+
+      output.innerHTML = "🛵 开始点外卖...";
+      document.getElementById("step1").className = "step active";
+
+      try {
+        // 步骤1：下单
+        await delay(800);
+        document.getElementById("step1").className = "step done";
+        document.getElementById("step2").className = "step active";
+        output.innerHTML = "✅ 下单成功！餐厅开始准备...";
+
+        // 步骤2：准备中
+        await delay(1000);
+        document.getElementById("step2").className = "step done";
+        document.getElementById("step3").className = "step active";
+        output.innerHTML = "👨‍🍳 餐品已做好，骑手正在取餐...";
+
+        // 步骤3：配送中
+        await delay(1200);
+        document.getElementById("step3").className = "step done";
+        document.getElementById("step4").className = "step active";
+        output.innerHTML = "🛵 骑手正在路上，预计1分钟到达...";
+
+        // 步骤4：送达
+        await delay(800);
+        document.getElementById("step4").className = "step done";
+        output.innerHTML = "🎉 <b>外卖送达！请享用！🍔</b>";
+
+      } catch (error) {
+        output.innerHTML = `❌ 出错了：${error}`;
+      }
+    }
+
+    // ====== 模拟并行请求 ======
+
+    async function demoParallel() {
+      const output = document.getElementById("parallel-output");
+      output.innerHTML = "⏳ 正在同时请求数据...";
+
+      // 模拟三个网络请求
+      const fetchUser = delay(1500).then(() => ({ name: "小明", age: 25 }));
+      const fetchPosts = delay(2000).then(() => ["文章1", "文章2", "文章3"]);
+      const fetchWeather = delay(1000).then(() => "☀️ 晴天 26°C");
+
+      const startTime = Date.now();
+
+      try {
+        const [user, posts, weather] = await Promise.all([
+          fetchUser, fetchPosts, fetchWeather
+        ]);
+
+        const elapsed = (Date.now() - startTime) / 1000;
+
+        output.innerHTML = `
+          ✅ 全部加载完成！（耗时 ${elapsed} 秒，而不是总和 4.5 秒）<br><br>
+          👤 用户：${user.name}，${user.age}岁<br>
+          📝 文章：${posts.length} 篇<br>
+          🌤️ 天气：${weather}
+        `;
+      } catch (error) {
+        output.innerHTML = `❌ 请求失败：${error}`;
+      }
+    }
+  </script>
+
+  <hr>
+  <p style="text-align:center; opacity:0.6;">💡 Promise 和 async/await 是前端开发最核心的知识，务必掌握！</p>
+</body>
+</html>

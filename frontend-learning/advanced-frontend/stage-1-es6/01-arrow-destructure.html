@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>ES6+ 第1课：箭头函数与解构</title>
+  <style>
+    body { font-family: "Microsoft YaHei", sans-serif; background: #1a1a2e; color: #eee; padding: 20px; line-height: 1.8; }
+    h1 { text-align: center; color: #e94560; }
+    .card { background: #16213e; border-radius: 10px; padding: 20px; margin: 15px 0; }
+    .card h2 { color: #f39c12; font-size: 16px; margin-top: 0; }
+    pre { background: #0f3460; padding: 15px; border-radius: 8px; overflow-x: auto; color: #53d769; font-size: 14px; }
+    code { background: #0f3460; padding: 2px 6px; border-radius: 3px; color: #53d769; }
+    .output-box { background: #0f3460; border-left: 4px solid #e94560; padding: 10px 15px; border-radius: 0 5px 5px 0; min-height: 30px; }
+    button { background: #e94560; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+    button:hover { background: #c73652; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #333; padding: 8px; text-align: left; }
+    th { background: #e94560; color: white; }
+    .badge { display: inline-block; background: #f39c12; color: #1a1a2e; padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <h1>📦 ES6+ 现代 JavaScript — 箭头函数与解构</h1>
+
+  <div class="card">
+    <h2>📌 前置概念：let 和 const（复习）</h2>
+    <p>在基础阶段学过了，现在记住一条原则：<strong>尽量用 const，需要改的用 let，永远不用 var。</strong></p>
+    <pre>
+const PI = 3.14;       // 常量，不能重新赋值
+let count = 0;          // 变量，可以改
+// var old = "别用我";  // ❌ 不要用 var</pre>
+  </div>
+
+  <div class="card">
+    <h2>➡️ 箭头函数 Arrow Function</h2>
+    <pre>
+// 传统函数
+function add(a, b) { return a + b; }
+
+// 箭头函数（等价）
+const add = (a, b) => a + b;
+
+// 如果只有一个参数，可以省略括号
+const double = x => x * 2;
+
+// 如果没有参数，必须写括号
+const hello = () => "你好！";
+
+// 如果函数体有多行，需要加 {} 和 return
+const greet = (name) => {
+  const msg = `你好，${name}！`;
+  return msg;
+};
+    </pre>
+    <p>箭头函数和传统函数的区别：<br>
+    ✅ 语法更简洁<br>
+    ✅ 不绑定自己的 <code>this</code>（后面会用到这个优势）</p>
+  </div>
+
+  <div class="card">
+    <h2>🔄 模板字符串 Template Literals</h2>
+    <pre>
+const name = "小明";
+const age = 25;
+
+// 旧方式：字符串拼接
+const old = "我叫" + name + "，今年" + age + "岁。";
+
+// 新方式：模板字符串（反引号 + ${}）
+const msg = `我叫${name}，今年${age}岁。`;
+
+// 还支持多行
+const html = `
+  &lt;div&gt;
+    &lt;p&gt;${name}&lt;/p&gt;
+  &lt;/div&gt;
+`;
+    </pre>
+  </div>
+
+  <div class="card">
+    <h2>🔀 解构赋值 Destructuring</h2>
+    <pre>
+// ===== 数组解构 =====
+const colors = ["red", "green", "blue"];
+const [first, second, third] = colors;
+console.log(first);   // "red"
+
+// 跳过元素
+const [a, , c] = colors;
+console.log(c);        // "blue"
+
+// ===== 对象解构 =====
+const person = { name: "小明", age: 25, city: "北京" };
+const { name, age, city } = person;
+console.log(name);     // "小明"
+
+// 重命名
+const { name: userName, age: userAge } = person;
+console.log(userName); // "小明"
+
+// 默认值
+const { hobby = "无" } = person;
+console.log(hobby);    // "无"
+
+// 嵌套解构
+const data = { user: { name: "小红", age: 22 } };
+const { user: { name: n } } = data;
+console.log(n);        // "小红"
+    </pre>
+  </div>
+
+  <div class="card">
+    <h2>🌊 展开运算符 Spread Operator</h2>
+    <pre>
+// 数组展开
+const arr1 = [1, 2, 3];
+const arr2 = [4, 5, 6];
+const merged = [...arr1, ...arr2];  // [1,2,3,4,5,6]
+
+// 复制数组（浅拷贝）
+const copy = [...arr1];
+
+// 对象展开
+const base = { name: "小明", age: 25 };
+const withCity = { ...base, city: "北京" };
+// { name: "小明", age: 25, city: "北京" }
+
+// 覆盖属性
+const updated = { ...base, age: 26 };
+// { name: "小明", age: 26 }
+    </pre>
+  </div>
+
+  <div class="card">
+    <h2>🎯 互动演示</h2>
+    <button onclick="demoArrow()">箭头函数演示</button>
+    <button onclick="demoDestructure()">解构演示</button>
+    <button onclick="demoSpread()">展开运算演示</button>
+    <div id="demo-output" class="output-box">点击按钮查看效果</div>
+  </div>
+
+  <div class="card">
+    <h2>✏️ 动手试试</h2>
+    <p>在下方输入你的名字和年龄，点击按钮生成自我介绍：</p>
+    <input type="text" id="user-name" placeholder="名字" style="padding:8px; border-radius:5px; border:none;">
+    <input type="number" id="user-age" placeholder="年龄" style="padding:8px; border-radius:5px; border:none;">
+    <button onclick="generateIntro()">生成介绍</button>
+    <div id="intro-output" class="output-box" style="margin-top:10px;"></div>
+  </div>
+
+  <script>
+    // ====== 交互演示 ======
+
+    function demoArrow() {
+      // 传统方式 vs 箭头函数
+      const nums = [1, 2, 3, 4, 5];
+
+      // 箭头函数让数组方法极其简洁
+      const doubled = nums.map(n => n * 2);
+      const evens = nums.filter(n => n % 2 === 0);
+      const sum = nums.reduce((acc, n) => acc + n, 0);
+
+      document.getElementById("demo-output").innerHTML = `
+        <b>数组 [1,2,3,4,5] 的箭头函数操作：</b><br>
+        map(x2): ${doubled.join(", ")}<br>
+        filter(偶数): ${evens.join(", ")}<br>
+        reduce(求和): ${sum}
+      `;
+    }
+
+    function demoDestructure() {
+      // 模拟 API 返回的数据
+      const apiResponse = {
+        code: 200,
+        data: {
+          user: { id: 1, name: "小明", email: "xm@example.com" },
+          posts: ["文章1", "文章2", "文章3"]
+        },
+        message: "success"
+      };
+
+      // 一行解构出深层嵌套的数据
+      const { data: { user: { name, email }, posts } } = apiResponse;
+
+      document.getElementById("demo-output").innerHTML = `
+        <b>从复杂对象中解构数据：</b><br>
+        用户名: ${name}<br>
+        邮箱: ${email}<br>
+        文章数: ${posts.length} 篇
+      `;
+    }
+
+    function demoSpread() {
+      const fruits = ["🍎", "🍌", "🍊"];
+      const more = ["🍇", "🍓"];
+
+      const all = [...fruits, ...more];  // 合并
+      const copy = [...fruits];          // 复制
+      copy.push("🥝");                   // 修改副本不影响原数组
+
+      document.getElementById("demo-output").innerHTML = `
+        <b>展开运算符演示：</b><br>
+        原数组: ${fruits.join(" ")}<br>
+        合并后: ${all.join(" ")}<br>
+        副本(已修改): ${copy.join(" ")}<br>
+        原数组未变: ${fruits.join(" ")} ✅
+      `;
+    }
+
+    function generateIntro() {
+      const name = document.getElementById("user-name").value.trim() || "未知";
+      const age = document.getElementById("user-age").value.trim() || "?";
+
+      // 使用模板字符串和箭头函数
+      const createIntro = (n, a) => `大家好，我是 ${n}，今年 ${a} 岁！`;
+
+      // 使用对象字面量增强
+      const info = { name, age };  // 等价于 { name: name, age: age }
+
+      document.getElementById("intro-output").innerHTML = `
+        ${createIntro(name, age)}<br>
+        <small>📋 对象信息：${JSON.stringify(info)}</small>
+      `;
+    }
+  </script>
+
+  <hr>
+  <p style="text-align:center; opacity:0.6;">📌 提示：打开控制台 (F12) 可以看到更多日志</p>
+</body>
+</html>

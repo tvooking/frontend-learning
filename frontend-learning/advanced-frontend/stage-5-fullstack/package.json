@@ -1,0 +1,13 @@
+﻿{
+  "name": "fullstack-demo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev:server": "node server/index.js",
+    "dev:client": "npx serve client"
+  },
+  "dependencies": {
+    "express": "^4.18.0",
+    "cors": "^2.8.5"
+  }
+}

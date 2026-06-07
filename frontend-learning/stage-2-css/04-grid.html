@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>第4课：CSS Grid 网格布局</title>
+  <style>
+    body {
+      font-family: "Microsoft YaHei", sans-serif;
+      background: #f0f2f5;
+      padding: 20px;
+    }
+    h1 { text-align: center; color: #2c3e50; }
+
+    .section {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .grid-item {
+      background: #9b59b6;
+      color: white;
+      padding: 20px;
+      border-radius: 5px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    /* 1. 基本网格：3列 */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* 2. 固定 + 自适应 */
+    .grid-mix {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 10px;
+    }
+
+    /* 3. 重复函数 */
+    .grid-repeat {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    /* 4. 网格区域 */
+    .grid-area {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      grid-template-rows: auto auto auto;
+      gap: 10px;
+    }
+    .header-area { grid-column: 1 / 4; background: #e74c3c; }
+    .nav-area    { grid-row: 2 / 4; background: #3498db; }
+    .main-area   { grid-column: 2 / 4; background: #2ecc71; }
+    .footer-area { grid-column: 2 / 4; background: #f39c12; }
+
+    .grid-area .grid-item {
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔲 CSS Grid 网格布局</h1>
+
+  <div class="section">
+    <h2>① 三列等宽网格</h2>
+    <p><code>grid-template-columns: 1fr 1fr 1fr</code> — fr 是弹性单位</p>
+    <div class="grid-3">
+      <div class="grid-item">1</div>
+      <div class="grid-item">2</div>
+      <div class="grid-item">3</div>
+      <div class="grid-item">4</div>
+      <div class="grid-item">5</div>
+      <div class="grid-item">6</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>② 固定宽度 + 自适应</h2>
+    <p>左侧 200px 侧边栏 + 右侧自适应</p>
+    <div class="grid-mix">
+      <div class="grid-item" style="background:#e67e22;">侧边栏 200px</div>
+      <div class="grid-item" style="background:#2ecc71;">主内容区（自适应）</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>③ repeat() 函数</h2>
+    <p><code>grid-template-columns: repeat(4, 1fr)</code> = 4 等分</p>
+    <div class="grid-repeat">
+      <div class="grid-item">1/4</div>
+      <div class="grid-item">1/4</div>
+      <div class="grid-item">1/4</div>
+      <div class="grid-item">1/4</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>④ 网格区域布局 — 经典页面结构</h2>
+    <div class="grid-area">
+      <div class="grid-item header-area">页头 Header</div>
+      <div class="grid-item nav-area">导航 Nav</div>
+      <div class="grid-item main-area">主内容 Main</div>
+      <div class="grid-item footer-area">页脚 Footer</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>📊 Grid vs Flexbox 怎么选？</h2>
+    <ul>
+      <li><b>Flexbox</b> — 一维布局（行 或 列），适合导航栏、卡片行</li>
+      <li><b>Grid</b> — 二维布局（行和列同时），适合页面整体框架、照片墙</li>
+      <li><b>两者结合</b> — 外层用 Grid 布局页面，内部用 Flexbox 排细节</li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <h2>✏️ 动手试试</h2>
+  <p>1. 用 Grid 做一个 3×3 的照片墙<br>
+     2. 做一个博客页面布局：header + 左侧文章 + 右侧侧边栏 + footer</p>
+</body>
+</html>

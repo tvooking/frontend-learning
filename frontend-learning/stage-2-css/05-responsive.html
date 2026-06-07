@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第5课：响应式设计</title>
+  <style>
+    /* 全局重置 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Microsoft YaHei", sans-serif;
+      background: #f0f2f5;
+    }
+
+    /* ========== 页面布局 ========== */
+    .header {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 30px 20px;
+    }
+
+    .nav {
+      background: #34495e;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 15px;
+    }
+    .nav a {
+      color: white;
+      text-decoration: none;
+      padding: 5px 15px;
+    }
+    .nav a:hover {
+      background: #3498db;
+      border-radius: 5px;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+
+    .main {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .sidebar {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .card {
+      background: #3498db;
+      color: white;
+      padding: 30px 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .footer {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    /* ========== 响应式：媒体查询 ========== */
+
+    /* 平板：宽度 ≤ 768px */
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;   /* 变成单列 */
+      }
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);  /* 两列卡片 */
+      }
+      .nav {
+        flex-direction: column;       /* 导航变纵向 */
+        align-items: center;
+      }
+    }
+
+    /* 手机：宽度 ≤ 480px */
+    @media (max-width: 480px) {
+      .card-grid {
+        grid-template-columns: 1fr;   /* 一列卡片 */
+      }
+      .header h1 {
+        font-size: 22px;
+      }
+    }
+
+    /* 说明区样式 */
+    .notes {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+    .notes .tip {
+      background: white;
+      border-left: 5px solid #3498db;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 0 8px 8px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>📱 响应式设计演示</h1>
+    <p>调整浏览器窗口大小，看看页面如何自动适配！</p>
+  </div>
+
+  <div class="nav">
+    <a href="#">首页</a>
+    <a href="#">关于</a>
+    <a href="#">服务</a>
+    <a href="#">博客</a>
+    <a href="#">联系</a>
+  </div>
+
+  <div class="container">
+    <div class="main">
+      <h2>主内容区</h2>
+      <p>这是一个响应式布局页面。试试缩小浏览器窗口看看效果！</p>
+      <p>CSS 使用 <code>@media (max-width: ...)</code> 来检测屏幕宽度。</p>
+
+      <div class="card-grid">
+        <div class="card">卡片 1</div>
+        <div class="card">卡片 2</div>
+        <div class="card">卡片 3</div>
+        <div class="card">卡片 4</div>
+        <div class="card">卡片 5</div>
+        <div class="card">卡片 6</div>
+      </div>
+    </div>
+    <div class="sidebar">
+      <h3>侧边栏</h3>
+      <p>在手机上会自动移到主内容下方。</p>
+      <ul style="margin-top:10px; padding-left:20px;">
+        <li>最近文章</li>
+        <li>热门标签</li>
+        <li>关于作者</li>
+        <li>友情链接</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="notes">
+    <div class="tip">
+      <h3>📌 响应式设计三要素</h3>
+      <ol>
+        <li><b>viewport 设置</b> — <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code></li>
+        <li><b>弹性布局</b> — 使用 %、fr、flex 等相对单位</li>
+        <li><b>媒体查询</b> — <code>@media (max-width: 768px)</code> 在不同屏幕宽度下应用不同样式</li>
+      </ol>
+    </div>
+    <div class="tip">
+      <h3>💡 常用断点</h3>
+      <ul>
+        <li>手机：max-width: 480px</li>
+        <li>平板：max-width: 768px</li>
+        <li>笔记本：max-width: 1024px</li>
+        <li>桌面：1024px 以上</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2026 响应式设计教程</p>
+  </div>
+
+  <hr style="margin:20px;">
+
+  <h2 style="text-align:center;">✏️ 动手试试</h2>
+  <p style="text-align:center; max-width:600px; margin:10px auto;">
+    1. 修改媒体查询的断点值，观察变化<br>
+    2. 为平板模式添加更多样式调整（如字体大小、间距）
+  </p>
+</body>
+</html>

@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vite 项目演示</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div id="app">
+    <div class="container">
+      <h1>🚀 Vite + 原生 JS</h1>
+      <p class="subtitle">这是用 Vite 构建的前端项目！</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <span class="icon">⚡</span>
+          <h3>极速启动</h3>
+          <p>毫秒级冷启动，无需等待</p>
+        </div>
+        <div class="card">
+          <span class="icon">🔥</span>
+          <h3>热更新</h3>
+          <p>修改代码即时生效</p>
+        </div>
+        <div class="card">
+          <span class="icon">📦</span>
+          <h3>模块化</h3>
+          <p>原生 ES Module 支持</p>
+        </div>
+      </div>
+
+      <div class="counter-section">
+        <h2>计数器示例</h2>
+        <div class="counter">
+          <button id="decrement">−</button>
+          <span id="count">0</span>
+          <button id="increment">+</button>
+        </div>
+      </div>
+
+      <div class="api-section">
+        <h2>API 数据获取</h2>
+        <button id="fetch-btn">📥 获取用户</button>
+        <div id="user-list"></div>
+      </div>
+
+      <footer>
+        <p>🔥 试着修改这个页面，浏览器会自动更新！</p>
+        <p>📝 编辑 <code>main.js</code> 或 <code>style.css</code></p>
+      </footer>
+    </div>
+  </div>
+  <script type="module" src="/main.js"></script>
+</body>
+</html>

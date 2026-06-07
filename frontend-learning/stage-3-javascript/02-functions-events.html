@@ -1,0 +1,209 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>第2课：函数与事件</title>
+  <style>
+    body {
+      font-family: "Microsoft YaHei", sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: #333;
+    }
+    h1 { text-align: center; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 15px auto;
+      max-width: 600px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .card h2 { color: #667eea; margin-top: 0; }
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 15px;
+      margin: 5px;
+      transition: transform 0.2s;
+    }
+    button:hover {
+      transform: scale(1.05);
+      background: #5a6fd6;
+    }
+    .counter {
+      font-size: 48px;
+      text-align: center;
+      color: #667eea;
+      margin: 10px 0;
+    }
+    input, select {
+      padding: 8px 12px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      font-size: 15px;
+      margin: 5px;
+    }
+    input:focus { border-color: #667eea; outline: none; }
+    #output-area {
+      background: #f8f9fa;
+      border-radius: 5px;
+      padding: 10px;
+      margin-top: 10px;
+      min-height: 30px;
+    }
+    .pre {
+      background: #f0f0f0;
+      padding: 10px;
+      border-radius: 5px;
+      font-family: monospace;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔧 函数与事件</h1>
+
+  <div class="card">
+    <h2>① 点击事件 onclick</h2>
+    <button onclick="sayHello()">点我打招呼</button>
+    <button onclick="showTime()">显示时间</button>
+    <div id="output1" class="pre">👆 点击按钮看效果</div>
+  </div>
+
+  <div class="card">
+    <h2>② 计数器</h2>
+    <div style="text-align:center;">
+      <button onclick="decrement()">−</button>
+      <span class="counter" id="counter">0</span>
+      <button onclick="increment()">+</button>
+      <br>
+      <button onclick="resetCounter()" style="background:#e74c3c;">重置</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>③ 输入框事件</h2>
+    <p>实时显示输入内容：</p>
+    <input type="text" id="name-input" placeholder="输入你的名字" oninput="showName()">
+    <p id="greeting-output">你好，朋友！</p>
+  </div>
+
+  <div class="card">
+    <h2>④ 鼠标事件</h2>
+    <div id="hover-area"
+         style="background:#f0f0f0; padding:40px; text-align:center; border-radius:8px; border:2px dashed #ccc;"
+         onmouseenter="onHoverIn(this)"
+         onmouseleave="onHoverOut(this)">
+      🫸 鼠标移入这里
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⑤ 计算器（函数传参）</h2>
+    <input type="number" id="num1" value="10">
+    <select id="operator">
+      <option value="+">+</option>
+      <option value="-">−</option>
+      <option value="*">×</option>
+      <option value="/">÷</option>
+    </select>
+    <input type="number" id="num2" value="5">
+    <button onclick="calculate()">=</button>
+    <span id="calc-result" style="font-size:24px; font-weight:bold; margin-left:10px;">15</span>
+  </div>
+
+  <script>
+    // ====== 1. 函数定义 ======
+
+    // 无参数函数
+    function sayHello() {
+      document.getElementById("output1").innerHTML = "👋 你好呀！欢迎学习 JavaScript！";
+    }
+
+    // 带参数函数
+    function showTime() {
+      let now = new Date();
+      let timeStr = now.getHours() + ":" +
+                    String(now.getMinutes()).padStart(2, "0") + ":" +
+                    String(now.getSeconds()).padStart(2, "0");
+      document.getElementById("output1").innerHTML = "🕐 当前时间：" + timeStr;
+    }
+
+    // ====== 2. 计数器 ======
+    let count = 0;
+
+    function increment() {
+      count++;
+      document.getElementById("counter").textContent = count;
+    }
+
+    function decrement() {
+      count--;
+      document.getElementById("counter").textContent = count;
+    }
+
+    function resetCounter() {
+      count = 0;
+      document.getElementById("counter").textContent = count;
+    }
+
+    // ====== 3. 输入事件 ======
+    function showName() {
+      let name = document.getElementById("name-input").value;
+      if (name.trim() === "") {
+        document.getElementById("greeting-output").textContent = "你好，朋友！";
+      } else {
+        document.getElementById("greeting-output").textContent = `你好，${name}！🎉`;
+      }
+    }
+
+    // ====== 4. 鼠标事件 ======
+    function onHoverIn(el) {
+      el.style.background = "#667eea";
+      el.style.color = "white";
+      el.style.borderColor = "#764ba2";
+      el.textContent = "✅ 鼠标在这里！";
+    }
+
+    function onHoverOut(el) {
+      el.style.background = "#f0f0f0";
+      el.style.color = "#333";
+      el.style.borderColor = "#ccc";
+      el.textContent = "🫸 鼠标移入这里";
+    }
+
+    // ====== 5. 计算器 ======
+    function calculate() {
+      let a = parseFloat(document.getElementById("num1").value);
+      let b = parseFloat(document.getElementById("num2").value);
+      let op = document.getElementById("operator").value;
+      let result;
+
+      switch (op) {
+        case "+": result = a + b; break;
+        case "-": result = a - b; break;
+        case "*": result = a * b; break;
+        case "/":
+          result = b === 0 ? "不能除以0" : a / b;
+          break;
+        default: result = "错误";
+      }
+
+      document.getElementById("calc-result").textContent = result;
+    }
+  </script>
+
+  <hr>
+
+  <h2 style="color:white; text-align:center;">✏️ 动手试试</h2>
+  <p style="color:white; text-align:center;">1. 给计算器加一个"清空"按钮<br>
+     2. 添加一个"暗色模式"切换按钮</p>
+</body>
+</html>
